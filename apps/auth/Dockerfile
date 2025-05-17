@@ -7,4 +7,4 @@ COPY . .
 RUN npm install
 RUN npm run build:auth
 
-CMD ["node", "dist/apps/auth/main.js"]
+CMD ["node", "dist/apps/auth/src/main.js"]

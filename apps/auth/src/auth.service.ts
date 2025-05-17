@@ -1,8 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { LoginDto, RegisterDto } from '@app/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
+import { Model } from 'mongoose';
+import { User } from '../schemas/user.schema';
 
 @Injectable()
 export class AuthService {
-  getHello(): string {
-    return 'Hello World!';
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
+
+  async register(dto: RegisterDto): Promise<User> {
+    const existing = await this.userModel.findOne({ email: dto.email });
+    if (existing) {
+      throw new ConflictException('이미 존재하는 이메일입니다.');
+    }
+
+    const hashed = await bcrypt.hash(dto.password, 10);
+    const createdUser = new this.userModel({
+      email: dto.email,
+      password: hashed,
+      role: dto.role,
+    });
+
+    return createdUser.save();
+  }
+
+  async login(dto: LoginDto): Promise<{ accessToken: string }> {
+    const user = await this.userModel.findOne({ email: dto.email });
+    if (!user) {
+      throw new UnauthorizedException('이메일 또는 비밀번호가 틀렸습니다.');
+    }
+
+    const isMatch = await bcrypt.compare(dto.password, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('이메일 또는 비밀번호가 틀렸습니다.');
+    }
+
+    const payload = {
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+    };
+
+    const accessToken = this.jwtService.sign(payload);
+    return { accessToken };
   }
 }

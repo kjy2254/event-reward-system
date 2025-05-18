@@ -6,6 +6,8 @@ services:
     container_name: mongo
     ports:
       - 27017:27017
+    networks:
+      - backend
     volumes:
       - mongo_data:/data/db
 
@@ -16,6 +18,8 @@ services:
     container_name: gateway
     ports:
       - 3000:3000
+    networks:
+      - backend
     depends_on:
       - auth
       - event
@@ -28,24 +32,29 @@ services:
       context: .
       dockerfile: apps/auth/Dockerfile
     container_name: auth
-    ports:
-      - 3001:3000
+    networks:
+      - backend
     depends_on:
       - mongo
     environment:
       - MONGO_URI=mongodb://mongo:27017/auth_db
+    restart: always
 
   event:
     build:
       context: .
       dockerfile: apps/event/Dockerfile
     container_name: event
-    ports:
-      - 3002:3000
+    networks:
+      - backend
     depends_on:
       - mongo
     environment:
       - MONGO_URI=mongodb://mongo:27017/event_db
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
   mongo_data:

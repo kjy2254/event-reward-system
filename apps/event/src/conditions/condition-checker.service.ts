@@ -41,7 +41,7 @@ export class ConditionCheckerService {
 
     const login = await this.loginLogModel.findOne({
       userId,
-      date: { $gte: start, $lt: end }, // ✅ 5월 5일 하루 전체 범위
+      date: { $gte: start, $lt: end }, // 5월 5일 하루 전체 범위
     });
 
     return !!login;

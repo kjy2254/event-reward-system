@@ -1,5 +1,5 @@
+import { Role } from '@app/common';
 import { IsEmail, IsEnum, IsString } from 'class-validator';
-import { Role } from '../interfaces/role.enum';
 
 export class RegisterDto {
   @IsEmail()

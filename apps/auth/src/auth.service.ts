@@ -1,4 +1,3 @@
-import { LoginDto, RegisterDto } from '@app/common';
 import {
   ConflictException,
   Injectable,
@@ -9,6 +8,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Model } from 'mongoose';
+import { LoginDto } from '../dto/login.dto';
+import { RegisterDto } from '../dto/register.dto';
 import { User } from '../schemas/user.schema';
 
 @Injectable()

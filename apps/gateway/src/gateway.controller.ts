@@ -1,4 +1,4 @@
-import { JwtAuthGuard, Role, Roles, RolesGuard } from '@app/common';
+import { Role, Roles } from '@app/common';
 import { HttpService } from '@nestjs/axios';
 import {
   All,
@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { lastValueFrom } from 'rxjs';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from './guards/roles.guard';
 
 @Controller()
 export class GatewayController {
@@ -61,7 +63,7 @@ export class GatewayController {
 
   @Get('event/requests/me')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.USER)
+  @Roles(Role.USER, Role.ADMIN)
   async proxyMyRequests(@Req() req: Request, @Res() res: Response) {
     return this.forward(req, res, `http://event:3000${req.originalUrl}`);
   }
@@ -75,7 +77,7 @@ export class GatewayController {
 
   private async forward(req: Request, res: Response, targetUrl: string) {
     const headers = { ...req.headers };
-    // 수정예정
+
     if ((req.user as any)?.userId) {
       headers['x-user-id'] = (req.user as any).userId;
     }

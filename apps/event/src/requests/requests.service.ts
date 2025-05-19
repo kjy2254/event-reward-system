@@ -20,6 +20,7 @@ export class RequestsService {
   ) {}
 
   async create(dto: CreateRequestDto, userId: string): Promise<RewardRequest> {
+    // 이벤트 존재 검사
     const event = await this.eventModel.findById(dto.eventId);
     if (!event) throw new NotFoundException('이벤트가 존재하지 않습니다.');
 
@@ -36,6 +37,7 @@ export class RequestsService {
       });
     }
 
+    // 보상 중복 수령 검사
     const rewarded = await this.requestModel.findOne({
       userId,
       eventId: dto.eventId,
@@ -49,6 +51,7 @@ export class RequestsService {
       });
     }
 
+    // 보상 수령 조건 충족 검사
     for (const key of event.conditions) {
       const ok = await this.conditionChecker.check(userId, key);
       if (!ok) {
@@ -60,6 +63,7 @@ export class RequestsService {
       }
     }
 
+    // 모든 조건 통과시 보상 지급
     const result = await this.requestModel.create({
       userId,
       eventId: dto.eventId,

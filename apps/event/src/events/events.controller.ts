@@ -6,11 +6,13 @@ import { EventsService } from './events.service';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
+  // 이벤트 등록
   @Post('events')
   create(@Body() dto: CreateEventDto, @Request() req) {
     return this.eventsService.create(dto);
   }
 
+  // 이벤트 조회
   @Get('events')
   async findAll() {
     return this.eventsService.findAll();

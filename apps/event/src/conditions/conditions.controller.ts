@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Model } from 'mongoose';
 import {
   ConditionDefinition,
@@ -14,6 +15,7 @@ export class ConditionsController {
   ) {}
 
   // 설정가능한 조건 목록 검색
+  @ApiBearerAuth()
   @Get()
   async findAll() {
     return this.conditionModel.find().select('key description -_id');

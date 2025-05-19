@@ -77,4 +77,20 @@ export class RequestsService {
       })),
     } as any;
   }
+
+  async findUserRequests(userId: string, eventId?: string, status?: string) {
+    const filter: any = { userId };
+    if (eventId) filter.eventId = eventId;
+    if (status) filter.status = status;
+
+    return this.requestModel.find(filter).sort({ createdAt: -1 }).exec();
+  }
+
+  async findAllRequests(eventId?: string, status?: string) {
+    const filter: any = {};
+    if (eventId) filter.eventId = eventId;
+    if (status) filter.status = status;
+
+    return this.requestModel.find(filter).sort({ createdAt: -1 }).exec();
+  }
 }

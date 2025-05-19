@@ -16,10 +16,9 @@ import { lastValueFrom } from 'rxjs';
 export class GatewayController {
   constructor(private readonly http: HttpService) {}
 
-  @All('auth/*') // 인증 없이 Auth로 프록시
+  @All('auth/*')
   async proxyAuth(@Req() req: Request, @Res() res: Response) {
-    const targetUrl = `http://auth:3000${req.originalUrl}`;
-    return this.forward(req, res, targetUrl);
+    return this.forward(req, res, `http://auth:3000${req.originalUrl}`);
   }
 
   @Post('event/events')
@@ -57,6 +56,20 @@ export class GatewayController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.USER, Role.ADMIN)
   async proxyRewardRequest(@Req() req, @Res() res: Response) {
+    return this.forward(req, res, `http://event:3000${req.originalUrl}`);
+  }
+
+  @Get('event/requests/me')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.USER)
+  async proxyMyRequests(@Req() req: Request, @Res() res: Response) {
+    return this.forward(req, res, `http://event:3000${req.originalUrl}`);
+  }
+
+  @Get('event/requests')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.OPERATOR, Role.AUDITOR, Role.ADMIN)
+  async proxyAllRequests(@Req() req: Request, @Res() res: Response) {
     return this.forward(req, res, `http://event:3000${req.originalUrl}`);
   }
 

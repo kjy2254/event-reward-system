@@ -7,14 +7,15 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 import { Model } from 'mongoose';
 import { User } from '../schemas/user.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    private jwtService: JwtService,
+    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(dto: RegisterDto): Promise<User> {
@@ -33,7 +34,9 @@ export class AuthService {
     return createdUser.save();
   }
 
-  async login(dto: LoginDto): Promise<{ accessToken: string }> {
+  async login(
+    dto: LoginDto,
+  ): Promise<{ accessToken: string; expiresAt: number }> {
     const user = await this.userModel.findOne({ email: dto.email });
     if (!user) {
       throw new UnauthorizedException('이메일 또는 비밀번호가 틀렸습니다.');
@@ -51,6 +54,9 @@ export class AuthService {
     };
 
     const accessToken = this.jwtService.sign(payload);
-    return { accessToken };
+    const decoded = jwt.decode(accessToken) as jwt.JwtPayload;
+    const expiresAt = decoded.exp ? decoded.exp * 1000 : null; // JS timestamp (ms)
+
+    return { accessToken, expiresAt };
   }
 }

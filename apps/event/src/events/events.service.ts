@@ -18,8 +18,10 @@ export class EventsService {
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
+    // 유효 조건인지 검사
     await this.validateConditions(createEventDto.conditions);
 
+    // 이벤트 중복 검사
     const existing = await this.eventModel.findOne({
       title: createEventDto.title,
     });
@@ -44,6 +46,7 @@ export class EventsService {
 
     const now = new Date();
 
+    // 이벤트 기간에 따라 활성화 여부 설정
     return events.map((event) => ({
       ...event,
       status:

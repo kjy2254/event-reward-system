@@ -13,10 +13,10 @@ export class RewardRequest {
 
   @Prop({ required: true })
   status:
-    | 'REWARDED'
-    | 'CONDITION_NOT_MET'
-    | 'ALREADY_REWARDED'
-    | 'EVENT_NOT_ACTIVE';
+    | 'REWARDED' // 보상 지급 기록
+    | 'CONDITION_NOT_MET' // 보상 조건 미달성
+    | 'ALREADY_REWARDED' // 중복 보상 요청
+    | 'EVENT_NOT_ACTIVE'; // 이벤트 비활성화 상태시 요청
 }
 
 export const RequestSchema = SchemaFactory.createForClass(RewardRequest);

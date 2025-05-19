@@ -13,6 +13,7 @@ export class ConditionsController {
     private readonly conditionModel: Model<ConditionDefinitionDocument>,
   ) {}
 
+  // 설정가능한 조건 목록 검색
   @Get()
   async findAll() {
     return this.conditionModel.find().select('key description -_id');

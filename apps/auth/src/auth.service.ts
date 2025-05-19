@@ -25,6 +25,7 @@ export class AuthService {
       throw new ConflictException('이미 존재하는 이메일입니다.');
     }
 
+    // 비밀번호 암호화 후 저장
     const hashed = await bcrypt.hash(dto.password, 10);
     const createdUser = new this.userModel({
       email: dto.email,

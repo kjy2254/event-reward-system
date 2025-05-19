@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common';
-import { EventController } from './event.controller';
-import { EventService } from './event.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConditionsModule } from './conditions/conditions.module';
+import { EventsModule } from './events/events.module';
+import { RequestsModule } from './requests/requests.module';
+import { RewardsModule } from './rewards/rewards.module';
 
 @Module({
-  imports: [],
-  controllers: [EventController],
-  providers: [EventService],
+  imports: [
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    EventsModule,
+    RewardsModule,
+    RequestsModule,
+    ConditionsModule,
+  ],
 })
 export class EventModule {}

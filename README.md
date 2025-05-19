@@ -1,5 +1,3 @@
-# README
-
 # 🎯 이벤트 보상 관리 시스템
 
 NestJS 기반의 MSA(Microservice Architecture) 구조로 구축된 **이벤트/보상 관리 플랫폼**입니다. 이 시스템은 유저가 조건을 만족하면 보상을 받을 수 있도록 구성되어 있으며, JWT 인증/인가, 역할 기반 접근 제어, 이벤트 조건 검증, 보상 요청 이력 조회 등의 기능을 포함합니다.
@@ -129,6 +127,8 @@ $ docker-compose up --build
 [http://localhost:3002/docs](http://localhost:3002/docs)
 
 </aside>
+
+> docker-compose up 후 접속
 
 ---
 

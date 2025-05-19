@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { CreateEventDto } from './dto/create-event.dto';
 import { EventsService } from './events.service';
 
@@ -7,6 +8,7 @@ export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   // 이벤트 등록
+  @ApiBearerAuth()
   @Post('events')
   create(@Body() dto: CreateEventDto, @Request() req) {
     return this.eventsService.create(dto);

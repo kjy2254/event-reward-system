@@ -27,15 +27,13 @@ $ docker-compose up --build
 
 ### 2. 서버 포트
 
-| 서비스                                                               | 주소                                            |
-| -------------------------------------------------------------------- | ----------------------------------------------- |
-| Gateway                                                              | [http://localhost:3000](http://localhost:3000/) |
-| Auth                                                                 | 내부 서비스용                                   |
-| (API Docs: [http://localhost:3001/docs](http://localhost:3001/docs)) |                                                 |
-| Event                                                                | 내부 서비스용                                   |
-| (API Docs: [http://localhost:3002/docs](http://localhost:3002/docs)) |                                                 |
-| MongoDB                                                              | localhost:27017                                 |
-| (테스트용, 컨테이너 내부에선 mongo로 접근)                           |                                                 |
+| 서비스                                     | 주소                                            |
+| ------------------------------------------ | ----------------------------------------------- |
+| Gateway                                    | [http://localhost:3000](http://localhost:3000/) |
+| Auth                                       | 내부 서비스용                                   |
+| Event                                      | 내부 서비스용                                   |
+| MongoDB                                    | localhost:27017                                 |
+| (테스트용, 컨테이너 내부에선 mongo로 접근) |                                                 |
 
 > 모든 요청은 반드시 Gateway를 통해 이루어집니다.
 
@@ -116,7 +114,7 @@ $ docker-compose up --build
 
 **Auth**
 
-[http://localhost:3001/docs](http://localhost:3001/docs)
+[http://localhost:3000/docs/auth/](http://localhost:3000/docs/auth/)
 
 </aside>
 
@@ -124,7 +122,7 @@ $ docker-compose up --build
 
 **Event**
 
-[http://localhost:3002/docs](http://localhost:3002/docs)
+[http://localhost:3000/docs/event/](http://localhost:3000/docs/event/)
 
 </aside>
 

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { GatewayController } from './gateway.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { SwaggerProxyController } from './swagget.controller';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     }),
     HttpModule,
   ],
-  controllers: [GatewayController],
+  controllers: [GatewayController, SwaggerProxyController],
   providers: [JwtStrategy],
 })
 export class GatewayModule {}
